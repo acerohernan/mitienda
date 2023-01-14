@@ -21,7 +21,7 @@ const PhoneInput: React.FC<Props> = ({
   defaultPrefix,
   onPrefixChange,
 }) => {
-  const [selectedPrefix, setSelectedPrefix] = useState<IPrefix>(() => {
+  const [selectedPrefix] = useState<IPrefix>(() => {
     let prefix = prefixes['1']
 
     if (defaultPrefix && prefixes[defaultPrefix]) {
