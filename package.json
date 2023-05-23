@@ -1,0 +1,15 @@
+{
+  "name": "mitienda-monorepo",
+  "description": "This is the main monorepo of mitienda",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "author": "acerohernan",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "server": "yarn workspace @mitienda/server"
+  }
+}
