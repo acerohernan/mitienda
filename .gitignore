@@ -42,3 +42,16 @@ lerna-debug.log*
 .env
 .env.*
 !.env.template
+
+# CDK
+*.js
+!jest.config.js
+*.d.ts
+node_modules
+
+# CDK asset staging directory
+.cdk.staging
+cdk.out
+
+# CRITICAL
+user-data.sh
