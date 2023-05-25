@@ -1,17 +1,16 @@
 import * as cdk from "aws-cdk-lib";
-import * as s3 from "aws-cdk-lib/aws-s3";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 import * as iam from "aws-cdk-lib/aws-iam";
 import { Construct } from "constructs";
 import { readFileSync } from "fs";
-// import * as sqs from 'aws-cdk-lib/aws-sqs';
+import path = require("path");
 
 export class InfraStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    /* First, create the bucket */
-    /* new s3.Bucket(this, "mitienda-tenant-images-bucket", {
+    /* Create the bucket for the images */
+    /*    const s3Bucket = new s3.Bucket(this, "mitienda-bucket", {
       bucketName: "mitienda-tenant-images-bucket",
       publicReadAccess: true,
     }); */
@@ -53,6 +52,27 @@ export class InfraStack extends cdk.Stack {
       ],
     });
 
+    const dockerConfig = ec2.InitFile.fromAsset(
+      "/app/docker-compose.yml",
+      path.resolve(
+        __dirname,
+        "..",
+        "..",
+        "apps",
+        "server",
+        "docker-compose.prod.yml"
+      ),
+      {}
+    );
+
+    const envFile = ec2.InitFile.fromAsset(
+      "/app/docker.env",
+      path.resolve(__dirname, "..", "..", "apps", "server", ".env.docker")
+    );
+
+    /* Create init configuratin instance */
+    const init = ec2.CloudFormationInit.fromElements(dockerConfig, envFile);
+
     /* Create the instance */
     const ec2Instance = new ec2.Instance(this, "ec2-instance", {
       vpc,
@@ -66,10 +86,22 @@ export class InfraStack extends cdk.Stack {
         generation: ec2.AmazonLinuxGeneration.AMAZON_LINUX_2,
       }),
       keyName: "mitienda-key-pair",
+      init,
     });
 
-    const userDataScript = readFileSync("./lib/user-data.sh", "utf8");
+    const userDataScript = readFileSync(
+      path.resolve(__dirname, "user-data.sh"),
+      "utf8"
+    );
 
     ec2Instance.addUserData(userDataScript);
+
+    /* Create the instance's elastic ip address */
+    const elasticIP = new ec2.CfnEIP(this, "ec2-instance-ip");
+
+    new ec2.CfnEIPAssociation(this, "ec2-ip-association", {
+      eip: elasticIP.ref,
+      instanceId: ec2Instance.instanceId,
+    });
   }
 }

@@ -10,6 +10,7 @@
     "apps/*"
   ],
   "scripts": {
-    "server": "yarn workspace @mitienda/server"
+    "server": "yarn workspace @mitienda/server",
+    "infra:deploy": "cd infra && cdk deploy"
   }
 }
