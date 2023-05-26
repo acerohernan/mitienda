@@ -1,6 +1,7 @@
 import * as cdk from "aws-cdk-lib";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 import * as iam from "aws-cdk-lib/aws-iam";
+import * as s3 from "aws-cdk-lib/aws-s3";
 import * as route53 from "aws-cdk-lib/aws-route53";
 import { Construct } from "constructs";
 import { readFileSync } from "fs";
@@ -11,10 +12,14 @@ export class InfraStack extends cdk.Stack {
     super(scope, id, props);
 
     /* Create the bucket for the images */
-    /*    const s3Bucket = new s3.Bucket(this, "mitienda-bucket", {
+    const s3Bucket = new s3.Bucket(this, "mitienda-bucket", {
       bucketName: "mitienda-tenant-images-bucket",
-      publicReadAccess: true,
-    }); */
+      versioned: false,
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ACLS,
+      accessControl: s3.BucketAccessControl.BUCKET_OWNER_FULL_CONTROL,
+    });
+
+    s3Bucket.grantPublicAccess();
 
     /* Getting the default vpc */
     const vpc = ec2.Vpc.fromLookup(this, "vpc", {
@@ -88,7 +93,7 @@ export class InfraStack extends cdk.Stack {
       machineImage: new ec2.AmazonLinuxImage({
         generation: ec2.AmazonLinuxGeneration.AMAZON_LINUX_2,
       }),
-      keyName: "ubuntu-key-pair",
+      keyName: "mitienda-key-pair",
       init,
     });
 
