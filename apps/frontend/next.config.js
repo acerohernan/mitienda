@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ["mitienda-bucket.s3.us-west-2.amazonaws.com"],
+    domains: ["mitienda-tenant-images-bucket.s3.us-east-1.amazonaws.com"],
     remotePatterns: [
       {
         protocol: "http",

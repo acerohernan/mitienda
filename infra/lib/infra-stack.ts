@@ -93,7 +93,7 @@ export class InfraStack extends cdk.Stack {
       machineImage: new ec2.AmazonLinuxImage({
         generation: ec2.AmazonLinuxGeneration.AMAZON_LINUX_2,
       }),
-      keyName: "mitienda-key-pair",
+      keyName: "ubuntu-key-pair",
       init,
     });
 
