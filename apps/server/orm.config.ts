@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { config } from 'dotenv';
 import { DataSource } from 'typeorm';
 
-config({ path: '.env.development' });
+config({ path: '.env.production' });
 
 const configService = new ConfigService();
 

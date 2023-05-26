@@ -45,9 +45,7 @@ docker-compose.prod.yml
 !.env.template
 
 # CDK
-*.js
 !jest.config.js
-*.d.ts
 node_modules
 
 # CDK asset staging directory
