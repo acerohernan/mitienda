@@ -17,6 +17,7 @@ export class InfraStack extends cdk.Stack {
       versioned: false,
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ACLS,
       accessControl: s3.BucketAccessControl.BUCKET_OWNER_FULL_CONTROL,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
 
     s3Bucket.grantPublicAccess();
@@ -93,7 +94,7 @@ export class InfraStack extends cdk.Stack {
       machineImage: new ec2.AmazonLinuxImage({
         generation: ec2.AmazonLinuxGeneration.AMAZON_LINUX_2,
       }),
-      keyName: "ubuntu-key-pair",
+      keyName: "windows-key-pair",
       init,
     });
 
