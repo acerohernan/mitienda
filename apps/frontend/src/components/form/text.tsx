@@ -20,14 +20,14 @@ const TextInput: React.FC<Props> = ({
   return (
     <div>
       {label ? (
-        <label htmlFor="name" className="label mb-2 inline-block">
+        <label htmlFor={label} className="label mb-2 inline-block">
           {label}
           {!optional && " *"}
         </label>
       ) : null}
       {!textarea && (
         <input
-          id="name"
+          id={label}
           className={`${error ? "input-error" : "input"} p-3 ${className} ${
             full && "w-full"
           }`}
@@ -37,7 +37,7 @@ const TextInput: React.FC<Props> = ({
       )}
       {textarea && (
         <textarea
-          id="name"
+          id={label}
           className={`${error ? "input-error" : "input"} p-3 ${className} ${
             full && "w-full"
           }`}

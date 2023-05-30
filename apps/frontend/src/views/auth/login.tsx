@@ -53,6 +53,7 @@ const LoginView = () => {
           <TextInput
             label="Email address"
             full
+            data-test-id="login-email-input"
             error={errors.email?.message}
             inputProps={{
               placeholder: "test@example.test",
@@ -68,6 +69,7 @@ const LoginView = () => {
           <div className="w-2 h-3" />
           <PasswordInput
             label="Password"
+            data-test-id="login-password-input"
             full
             error={errors.password?.message}
             inputProps={{
